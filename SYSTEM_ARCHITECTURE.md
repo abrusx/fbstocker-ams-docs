@@ -207,37 +207,38 @@ export interface AccountData {
   email?: string | null;                // Привязанная почта Firstmail
   emailPassword?: string | null;        // Пароль от почты
   totpSecret?: string | null;           // 2FA TOTP секрет (Base32)
-  backupCodes?: string[] | null;        // Резервные коды 2FA
-  codes?: string | null;                // Сырая строка кодов
+  backupCodes?: string | null;          // Резервные коды 2FA (одно текстовое поле)
 
-  // Метаданные железа и прокси (MobileProxy)
+  // Метаданные регистрации и происхождения
+  phone?: string | null;                // Номер SIM/регистрации (даже если DELETED)
+  registeredBy?: 'android' | 'browser' | string | null; // Среда: Android авторег или Браузер
+  regMethod?: string | null;            // 'phone_sms' | 'email' | 'phone_to_email'
+  apkVersion?: 'lite' | 'katana' | null; // Версия приложения при регистрации
   proxyRegIp?: string | null;           // IP регистрации
+  emailConfirmed?: boolean | null;      // Подтвержден ли email по IMAP
+
+  // Метаданные прокси и привязка
   proxyId?: number | string | null;     // ID прокси в базе AMS или MobileProxy
   proxyComment?: string | null;         // Имя/комментарий прокси
   proxyGeo?: string | null;             // Нативное гео ("US", "PL")
   proxyOperator?: string | null;        // Нативный оператор ("AT&T (US)")
 
   // Браузерный профиль (Адаптер)
-  browserProfileId?: string | null;     // ID профиля в антидетекте
-  dolphinProfileId?: string | null;     // Алиас для обратной совместимости
-  browserProvider?: string | null;      // "DOLPHIN" | "OCTO" | "ADSPOWER"
+  dolphinProfileId?: string | null;     // ID профиля в Dolphin Anty Cloud
   cookies?: any[] | string | null;      // Сессионные куки JSON
   userAgent?: string | null;            // User-Agent профиля
 
-  // Статус и трекинг
-  status?: string | null;               // "READY_FOR_FARM", "FARMING", "WARMED"
+  // Статус и трекинг прогрева
   farmStatus?: FarmStatus | null;       // Внутренний статус AMS
   crmStatusId?: number | null;
-  farmDaysCount?: number | null;        // Сколько дней аккаунт на прогреве
-  lastFarmDate?: string | null;         // Время крайнего сеанса фарма
-  apkVersion?: 'lite' | 'katana' | null;
-  country?: string | null;              // Таргет ГЕО (US, PL)
-  geo?: string | null;
+  touchCount?: number | null;           // Количество успешных сеансов/касаний прогрева
+  lastFarmAt?: string | null;           // Время крайнего сеанса фарма
+  geo?: string | null;                  // Таргет ГЕО (US, PL)
   createdAt?: string | null;
   notes?: string | null;
-  comment?: string | null;
-  accountHubFormat?: string | null;     // Формат для выгрузки в магазин
-  fanpageLinks?: string[] | null;
+  comment?: string | null;              // Заметка фармера/менеджера
+  shopCategory?: string | null;         // Категория в магазине
+  fanpageLinks?: string[] | null;       // Ссылки на Fan Pages
 }
 ```
 
